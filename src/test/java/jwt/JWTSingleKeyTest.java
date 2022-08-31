@@ -7,14 +7,12 @@ import org.junit.jupiter.api.Test;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
 
 class JWTSingleKeyTest {
-    private static final JWTManagement jwtManagement =
+    private static final JWTSingleKey jwtManagement =
             new JWTSingleKey("JWT_SINGLE_KEY_TEST_SECRET_KEY", SignatureAlgorithm.HS256);
 
     @Test
@@ -24,8 +22,12 @@ class JWTSingleKeyTest {
         map.put("id", 123L);
 
         String token = jwtManagement.generateToken(map);
+        String supplierToken = jwtManagement.generateToken(() -> map);
 
-        assertThat(token).isEqualTo(createTestToken());
+        String testToken = createTestToken();
+
+        assertThat(token).isEqualTo(testToken);
+        assertThat(supplierToken).isEqualTo(testToken);
     }
 
     String createTestToken() {
