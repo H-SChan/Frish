@@ -6,6 +6,12 @@ import java.util.Base64;
 
 public class Base64Coder {
 
+    /**
+     * use {@link Base64.Encoder#encodeToString(byte[])} to convert a string to Base64
+     * @param s A string to convert to base64
+     * @return A String containing the resulting Base64 encoded string
+     * @see Base64.Encoder#encodeToString(byte[])
+     */
     public String encode(String s) {
         byte[] byteS = s.getBytes(StandardCharsets.UTF_8);
         Base64.Encoder encoder = Base64.getEncoder();
