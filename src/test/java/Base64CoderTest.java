@@ -29,4 +29,30 @@ class Base64CoderTest {
             System.out.println("뭐고");
         }
     }
+
+    @Test
+    void urlImgEncode_x_icon() {
+        urlImgEncode("https://upload.wikimedia.org/favicon.ico");
+    }
+
+    @Test
+    void urlImgEncode_no_contentType() {
+        urlImgEncode("https://media.discordapp.net/attachments/998535054219288628/1015641819167592458/unknown.png");
+    }
+
+    @Test
+    void urlImgEncode_index() {
+        String encodedImg = urlImgEncode("https://upload.wikimedia.org/wikipedia/commons/1/14/Rubber_Duck_%288374802487%29.jpg");
+    }
+
+    @Test
+    void urlImgEncode_gif() {
+        urlImgEncode("https://c.tenor.com/JXvQS9se0ncAAAAC/duck-rubber-duck.gif");
+    }
+
+    private String urlImgEncode(String url) {
+        String encodedFile = base64coder.encodeImageInURL(url);
+        System.out.println(encodedFile);
+        return encodedFile;
+    }
 }
