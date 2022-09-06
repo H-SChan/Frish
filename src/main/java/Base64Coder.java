@@ -1,21 +1,39 @@
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 public class Base64Coder {
 
+    private final Charset charset;
+
+    public Base64Coder() {
+        this.charset = StandardCharsets.UTF_8;
+    }
+
+    public Base64Coder(Charset charset) {
+        this.charset = charset;
+    }
+
+
     /**
-     * use {@link Base64.Encoder#encodeToString(byte[])} to convert a string to Base64
+     * Use {@link Base64} to encode strings.
+     * If you do not specify charset, use {@link java.nio.charset.StandardCharsets#UTF_8 UTF-8} by default.
+     * The description below assumes that no charset is specified.
+     *
+     * <p>First, make it an array of bytes with UTF-8.
+     * Then encode to {@link java.util.Base64 Base64} and convert to string
+     * using UTF-8 charset
+     *
      * @param s A string to convert to base64
      * @return A String containing the resulting Base64 encoded string
-     * @see Base64.Encoder#encodeToString(byte[])
+     * @see Base64.Encoder#encode(byte[]) encode(byte[])
      */
     public String encode(String s) {
-        byte[] byteS = s.getBytes(StandardCharsets.UTF_8);
+        byte[] byteS = s.getBytes(charset);
         Base64.Encoder encoder = Base64.getEncoder();
-        return encoder.encodeToString(byteS);
+        return new String(encoder.encode(byteS), charset);
     }
 
     public String encode(byte[] b) {
