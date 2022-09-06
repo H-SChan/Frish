@@ -1,4 +1,3 @@
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -31,6 +30,15 @@ class Base64CoderTest {
     }
 
     @Test
+    void imageEncode_noFile() {
+        File file = new File("");
+//        base64coder.encode(file);
+        assertThatThrownBy(
+                () -> base64coder.encode(file)
+        ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     void urlImgEncode_x_icon() {
         urlImgEncode("https://upload.wikimedia.org/favicon.ico");
     }
@@ -48,6 +56,11 @@ class Base64CoderTest {
     @Test
     void urlImgEncode_gif() {
         urlImgEncode("https://c.tenor.com/JXvQS9se0ncAAAAC/duck-rubber-duck.gif");
+    }
+
+    @Test
+    void urlImgEncode_html() {
+        urlImgEncode("https://full-of-bluff.tistory.com/");
     }
 
     private String urlImgEncode(String url) {
