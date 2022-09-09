@@ -1,4 +1,8 @@
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -68,4 +72,30 @@ public class Base64Coder {
         }
     }
 
+    public String encodeImageInURL(String url) throws IOException {
+        URL requestUrl = new URL(url);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
+
+        connection.setRequestMethod("GET");
+        connection.setUseCaches(false);
+
+        String contentType = connection.getHeaderField("content-type");
+        if (contentType.matches("image*")) {
+            connection.disconnect();
+            throw new IllegalTypeException();
+        }
+
+        InputStream inputStream = connection.getInputStream();
+        int len;
+        byte[] buf = new byte[1024];
+        while ((len = inputStream.read(buf)) != -1) {
+            byteArrayOutputStream.write(buf, 0, len);
+        }
+
+        byte[] fileArray = byteArrayOutputStream.toByteArray();
+        return encode(fileArray);
+
+
+    }
 }
