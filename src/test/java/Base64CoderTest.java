@@ -64,13 +64,8 @@ class Base64CoderTest {
     }
 
     private String urlImgEncode(String url) {
-        try {
-            String result = base64coder.encodeImageInURL(url);
-            System.out.println(result);
-            return result;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
+        String result = base64coder.encodeImageInURL(url);
+        System.out.println(result);
+        return result;
     }
 }
