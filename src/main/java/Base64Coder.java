@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -55,7 +57,7 @@ public class Base64Coder {
     public String encode(File file) {
         try (
                 FileInputStream fileInputStream = new FileInputStream(file);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()
         ) {
             int len;
             byte[] buf = new byte[1024];
@@ -72,30 +74,38 @@ public class Base64Coder {
         }
     }
 
-    public String encodeImageInURL(String url) throws IOException {
-        URL requestUrl = new URL(url);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
+    public String encodeImageInURL(String url) {
+        try {
+            URL requestUrl = new URL(url);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            HttpURLConnection connection = (HttpURLConnection) requestUrl.openConnection();
 
-        connection.setRequestMethod("GET");
-        connection.setUseCaches(false);
+            connection.setRequestMethod("GET");
+            connection.setUseCaches(false);
 
-        String contentType = connection.getHeaderField("content-type");
-        if (contentType.matches("image*")) {
-            connection.disconnect();
-            throw new IllegalTypeException();
+            String contentType = connection.getHeaderField("content-type");
+            if (contentType.matches("image*")) {
+                connection.disconnect();
+                throw new IllegalTypeException();
+            }
+
+            InputStream inputStream = connection.getInputStream();
+            int len;
+            byte[] buf = new byte[1024];
+            while ((len = inputStream.read(buf)) != -1) {
+                byteArrayOutputStream.write(buf, 0, len);
+            }
+
+            byte[] fileArray = byteArrayOutputStream.toByteArray();
+            return encode(fileArray);
+        } catch (MalformedURLException e) {
+            throw new IllegalTypeException("adsf");
+        } catch (ProtocolException e) {
+            throw new IllegalTypeException("yubu");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw e;
         }
-
-        InputStream inputStream = connection.getInputStream();
-        int len;
-        byte[] buf = new byte[1024];
-        while ((len = inputStream.read(buf)) != -1) {
-            byteArrayOutputStream.write(buf, 0, len);
-        }
-
-        byte[] fileArray = byteArrayOutputStream.toByteArray();
-        return encode(fileArray);
-
-
     }
 }
