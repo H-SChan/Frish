@@ -1,0 +1,65 @@
+apply plugin: 'signing'
+apply plugin: 'maven-publish'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+
+            group = 'io.github.h-schan'
+            artifactId = 'frish'
+            version = '0.0.2'
+
+            from components.java
+
+            pom {
+                name = 'frish'
+                description = 'Help to encoding and decoding a string, file, etc for JAVA'
+                url = 'https://github.com/H-SChan/Frish.git'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'hsc'
+                        name = 'Heo Saechan'
+                        email = 'dlwp7581@gmail.com'
+                    }
+                }
+
+                scm {
+//                    connection = 'scm:git:github.com/H-SChan/Frish.git'
+//                    developerConnection = 'scm:git:ssh://github.com:H-SChan/Frish.git'
+                    url = 'https://github.com/H-SChan/Frish.git'
+                }
+            }
+
+
+        }
+    }
+    repositories {
+        maven {
+            name "sonatype"
+            url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = project.ossrhUsername
+                password = project.ossrhPassword
+            }
+        }
+    }
+}
+
+
+signing {
+    sign publishing.publications.mavenJava
+    sign configurations.archives
+}

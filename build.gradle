@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'hsc.hash'
-version '1.0-SNAPSHOT'
+group 'io.github.h-schan'
+version '0.0.1'
 
 repositories {
     mavenCentral()
@@ -13,8 +13,8 @@ ext {
     junitVersion = '5.9.0'
 }
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
@@ -24,10 +24,12 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
     testImplementation("org.assertj:assertj-core:3.23.1")
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+//    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+//    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
 }
 
 test {
     useJUnitPlatform()
 }
+
+apply from: 'publish.gradle'
