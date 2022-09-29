@@ -1,3 +1,5 @@
+package io.github.hsc;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
