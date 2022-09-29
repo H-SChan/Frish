@@ -1,3 +1,4 @@
+import io.github.hsc.Crypto;
 import org.junit.jupiter.api.Test;
 
 import java.security.NoSuchAlgorithmException;
